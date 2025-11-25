@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages (debug)
 on:
   push:
     branches:
@@ -16,20 +16,41 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
+      - name: Show repo status (debug)
+        run: |
+          echo "=== PWD ==="
+          pwd
+          echo "=== ROOT LIST ==="
+          ls -la
+          echo "=== SHOW package.json (if exists) ==="
+          if [ -f package.json ]; then
+            echo "package.json exists:"
+            sed -n '1,120p' package.json || true
+          else
+            echo "package.json NOT found in root"
+          fi
+          echo "=== SHOW package-lock.json (if exists) ==="
+          if [ -f package-lock.json ]; then
+            echo "package-lock.json exists:"
+            head -n 60 package-lock.json || true
+          else
+            echo "package-lock.json NOT found in root"
+          fi
+          echo "=== LIST .github/workflows ==="
+          ls -la .github || true
+          ls -la .github/workflows || true
+          node -v || true
+          npm -v || true
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install dependencies (try ci, fallback to install)
+        run: |
+          # If your project is in a subfolder, change directory here:
+          # cd frontend
+          npm ci || (echo "npm ci failed - trying npm install" && npm install --prefer-offline --no-audit --progress=false)
 
       - name: Build
         run: npm run build
         env:
-          # build 時に secrets を渡したい場合はここで設定（例）
-          # GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # ただしクライアントで直接使うキーは公開されるので注意してください
           NODE_ENV: production
 
       - name: Configure GitHub Pages

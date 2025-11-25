@@ -26,14 +26,19 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          # build 時に secrets を渡したい場合はここで設定（例）
+          # GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # ただしクライアントで直接使うキーは公開されるので注意してください
+          NODE_ENV: production
 
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v3
+        uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4

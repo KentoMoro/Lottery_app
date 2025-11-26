@@ -13,7 +13,7 @@ export const PRIZE_DATA: Record<PrizeType, ParticipantGroup> = {
     prize: PrizeType.AUDIO_INTERFACE,
     prizeName: "オーディオインターフェース (YAMAHA ZG01)",
     description: "ゲーム配信に最適なオーディオミキサー",
-    members: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I'],
+    members: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'J'],
     color: "from-cyan-500 to-blue-600",
     imageAlt: "Audio Interface"
   }
